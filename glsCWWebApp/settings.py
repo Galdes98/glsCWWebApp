@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'glsCWWebApp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.postgresql_psycopg2',
-        'NAME':'postgres',
-        'USER': 'galdes',
-        'PASSWORD':'xYQusR8pxviJFnL',
-        'HOST':'glscoweight.cydfhxahljat.us-east-1.rds.amazonaws.com',
+        'NAME':'coweight',
+        'USER': 'bruno',
+        'PASSWORD':'vallejos',
+        'HOST':'localhost',
         'PORT':'5432',
     }
 }

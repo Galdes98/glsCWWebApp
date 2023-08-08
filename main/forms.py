@@ -11,10 +11,10 @@ MOD = [
 class RegisterForm(UserCreationForm):
     
     email = forms.EmailField(required=True)
-    mod = forms.ChoiceField(choices=MOD)
+    #mod = forms.ChoiceField(choices=MOD)
     class Meta:
         model = User
-        fields = ["username","email","mod","password1", "password2"]
+        fields = ["username","email","password1", "password2"]
 
 class PostForm(forms.ModelForm):
     class Meta:
