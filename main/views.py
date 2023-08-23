@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, PostForm
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from .models import Post
 from django.views import View
 from django.http import StreamingHttpResponse
+from django.views.decorators.csrf import csrf_exempt  # Import the csrf_exempt decorator
+from .models import CapturedPicture
 import cv2
 import threading
 
@@ -51,6 +54,7 @@ def sign_up(request):
     return render(request, 'registration/sign_up.html', {"form": form})
 
 class webcam_view(View):
+    @csrf_exempt  # Apply the csrf_exempt decorator
     def get(self, request, *args, **kwargs):
         def generate_frames():
             cap = cv2.VideoCapture(0)  # 0 indicates the default camera (webcam)
@@ -63,3 +67,12 @@ class webcam_view(View):
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + frame_data + b'\r\n')
         return StreamingHttpResponse(generate_frames(), content_type='multipart/x-mixed-replace; boundary=frame')
+        
+    def post(self, request, *args, **kwargs):
+        image_data = request.FILES.get('image')   # Assuming you're sending the image via a POST request
+        user = request.user
+
+        captured_picture = CapturedPicture(user=user, image=image_data)
+        captured_picture.save()
+
+        return JsonResponse({'message': 'Picture captured and saved successfully'})        

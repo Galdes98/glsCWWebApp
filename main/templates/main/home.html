@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %} {% block title %}Home Page{% endblock %} 
+{% extends 'main/base.html' %} {% block title %}Pesaje por Imagen{% endblock %} 
 {% block content %} 
 
 <h1>Video de Webcam </h1>
@@ -13,21 +13,28 @@
 <iframe src="{% url 'webcam' %}" width="640" height="480"></iframe>
 
 <div>  
-  <button id="take-picture-btn">Tomar Foto</button>
+  <form id="capture-form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="image"> <!-- Make sure the name attribute is "image" -->
+    <button type="submit">Capture Picture</button>
+  </form>
+  {% comment %} <button id="take-picture-btn">Tomar Foto</button> {% endcomment %}
+  {% comment %} <button id="upload-picture-btn">Subir Imagen</button> {% endcomment %}
 </div>
+
 <script>
-  const btn = document.getElementById('take-picture-btn');
-  btn.addEventListener('click', () => {
-    fetch('/take_picture/')
-      .then(response => response.text())
-      .then(message => alert(message))
-      .catch(error => console.error(error));
+  document.getElementById('capture-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const response = await fetch('{% url 'webcam' %}', {
+          method: 'POST',
+          body: formData,
+      });
+      const data = await response.json();
+      alert(data.message);
   });
 </script>
 
-<div>  
-  <button id="upload-picture-btn">Subir Imagen</button>
-</div>
 <script>
   const btn = document.getElementById('upload-picture-btn');
   btn.addEventListener('click', () => {
