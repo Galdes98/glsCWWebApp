@@ -53,6 +53,24 @@ def sign_up(request):
         
     return render(request, 'registration/sign_up.html', {"form": form})
 
+def takePicture(request):
+    if request.method == 'POST':
+        cam = cv2.VideoCapture(0)
+
+        ret, frame = cam.read()
+
+        img_counter = 0
+
+        if not ret:
+            print("failed to grab frame")
+            return JsonResponse({'message': 'failed to grab frame'})
+
+        img_name = "testing.png"
+        cv2.imwrite(img_name, frame)
+        
+    return JsonResponse({'message': 'Picture captured and saved successfully'})
+    #return render(request, 'main/home.html')
+
 class webcam_view(View):
     @csrf_exempt  # Apply the csrf_exempt decorator
     def get(self, request, *args, **kwargs):
@@ -75,4 +93,7 @@ class webcam_view(View):
         captured_picture = CapturedPicture(user=user, image=image_data)
         captured_picture.save()
 
-        return JsonResponse({'message': 'Picture captured and saved successfully'})        
+        return JsonResponse({'message': 'Picture captured and saved successfully'})    
+
+    
+     

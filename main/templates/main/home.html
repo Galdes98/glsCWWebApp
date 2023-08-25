@@ -16,7 +16,7 @@
   <form id="capture-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="image"> <!-- Make sure the name attribute is "image" -->
-    <button type="submit">Capture Picture</button>
+    <button type="submit">Tomar foto</button>
   </form>
   {% comment %} <button id="take-picture-btn">Tomar Foto</button> {% endcomment %}
   {% comment %} <button id="upload-picture-btn">Subir Imagen</button> {% endcomment %}
@@ -26,7 +26,7 @@
   document.getElementById('capture-form').addEventListener('submit', async (event) => {
       event.preventDefault();
       const formData = new FormData(event.target);
-      const response = await fetch('{% url 'webcam' %}', {
+      const response = await fetch('{% url 'picture' %}', {
           method: 'POST',
           body: formData,
       });
@@ -36,12 +36,20 @@
 </script>
 
 <script>
-  const btn = document.getElementById('upload-picture-btn');
-  btn.addEventListener('click', () => {
-    fetch('/take_picture/')
+  const btn = document.getElementById('upload-picture-btn').addEventListener('click', async (event) => {
+    await fetch('/take_picture/')
       .then(response => response.text())
       .then(message => alert(message))
       .catch(error => console.error(error));
+
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const response = await fetch('{% url 'webcam' %}', {
+          method: 'POST',
+          body: formData,
+      });
+      const data = await response.json();
+      alert(data.message);
   });
 </script>
 
