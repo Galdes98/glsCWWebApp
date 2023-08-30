@@ -11,9 +11,9 @@ def pesaje(imagen):
     modelJson = model.predict(imagen).json()
 
     # save an image annotated with your predictions
-    model.predict(imagen).save("prediction_profile.jpg")
+    model.predict(imagen).save("prediction.jpg")
 
-    im = Image.open("prediction_profile.jpg")
+    im = Image.open("prediction.jpg")
     # Get the metadata of the image
     metadata = im.info
 
@@ -78,4 +78,13 @@ def pesaje(imagen):
         tot_dist_cm = tot_dist_cm + distance_cm
 
     # calculate the weight
-    weight = -413.36 + (2.69 * (tot_dist_cm * 0.85)) + (1.50 * tot_dist_cm)
+    weight = round(-413.36 + (2.69 * (tot_dist_cm * 0.85)) + (1.50 * tot_dist_cm), 2)
+
+    values = {
+        'weight': weight,
+        'distance': tot_dist_cm,
+        'width': width_cm,
+        'height': height_cm,        
+    }
+
+    return values

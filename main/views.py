@@ -7,7 +7,8 @@ from .models import Post
 from django.views import View
 from django.http import StreamingHttpResponse
 from django.views.decorators.csrf import csrf_exempt  # Import the csrf_exempt decorator
-from .models import CapturedPicture
+from .models import CapturedPicture, WeightHistory
+from main.coweightRoboYolo import pesaje
 import cv2
 import threading
 
@@ -65,11 +66,15 @@ def takePicture(request):
             print("failed to grab frame")
             return JsonResponse({'message': 'failed to grab frame'})
 
-        img_name = "testing.png"
+        img_name = "cowImage.jpg"
         cv2.imwrite(img_name, frame)
-        
-    return JsonResponse({'message': 'Picture captured and saved successfully'})
-    #return render(request, 'main/home.html')
+
+        values = pesaje(img_name)
+
+        insert_weight = WeightHistory(user=request.user, weight=values['weight'])
+        insert_weight.save()
+
+    return JsonResponse({'message': 'Imagen guardada correctamente', 'values': values})
 
 class webcam_view(View):
     @csrf_exempt  # Apply the csrf_exempt decorator
@@ -88,12 +93,20 @@ class webcam_view(View):
         
     def post(self, request, *args, **kwargs):
         image_data = request.FILES.get('image')   # Assuming you're sending the image via a POST request
+        print(image_data)
         user = request.user
 
         captured_picture = CapturedPicture(user=user, image=image_data)
         captured_picture.save()
 
-        return JsonResponse({'message': 'Picture captured and saved successfully'})    
+        #values = 1
+        values = pesaje(image_data.name)
+        weight_str = str(values['weight'])
+
+        insert_weight = WeightHistory(user=request.user, weight=values['weight'])
+        insert_weight.save()
+
+        return JsonResponse({'message': 'Imagen guardada correctamente ' + weight_str, 'values': values})
 
     
      

@@ -10,17 +10,24 @@
         .catch(error => console.error('Error accessing webcam:', error));
 </script> {% endcomment %}
 
-<iframe src="{% url 'webcam' %}" width="640" height="480"></iframe>
+<iframe src="{% url 'webcam' %}" width="1280" height="720"></iframe>
 
 <div>  
   <form id="capture-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="file" name="image"> <!-- Make sure the name attribute is "image" -->
+    {% comment %} <input type="file" name="image"> <!-- Make sure the name attribute is "image" --> {% endcomment %}
     <button type="submit">Tomar foto</button>
+  </form>
+
+  <form id="upload-picture-btn" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="image"> <!-- Make sure the name attribute is "image" --> 
+    <button type="submit">Guardar Imagen</button> 
   </form>
   {% comment %} <button id="take-picture-btn">Tomar Foto</button> {% endcomment %}
   {% comment %} <button id="upload-picture-btn">Subir Imagen</button> {% endcomment %}
 </div>
+
 
 <script>
   document.getElementById('capture-form').addEventListener('submit', async (event) => {
@@ -36,21 +43,16 @@
 </script>
 
 <script>
-  const btn = document.getElementById('upload-picture-btn').addEventListener('click', async (event) => {
-    await fetch('/take_picture/')
-      .then(response => response.text())
-      .then(message => alert(message))
-      .catch(error => console.error(error));
-
-      event.preventDefault();
-      const formData = new FormData(event.target);
-      const response = await fetch('{% url 'webcam' %}', {
-          method: 'POST',
-          body: formData,
-      });
-      const data = await response.json();
-      alert(data.message);
-  });
+  document.getElementById('upload-picture-btn').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const response = await fetch('{% url 'webcam' %}', {
+        method: 'POST',
+        body: formData,
+    });
+    const data = await response.json();
+    alert(data.message);
+});
 </script>
 
 

@@ -13,8 +13,16 @@ class Post(models.Model):
 
 class CapturedPicture(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='captured_pictures/')
+    image = models.ImageField(upload_to='.')
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Picture for {self.user.username} at {self.timestamp}"
+
+class WeightHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    weight = models.FloatField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Weight for {self.user.username} at {self.timestamp}"        
