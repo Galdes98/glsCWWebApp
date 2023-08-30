@@ -24,6 +24,11 @@
     <input type="file" name="image"> <!-- Make sure the name attribute is "image" --> 
     <button type="submit">Guardar Imagen</button> 
   </form>
+
+  <form id="download-history-btn" method="get" enctype="multipart/form-data">
+    {% csrf_token %}
+    <button type="submit">Descargar Historico</button> 
+  </form>
   {% comment %} <button id="take-picture-btn">Tomar Foto</button> {% endcomment %}
   {% comment %} <button id="upload-picture-btn">Subir Imagen</button> {% endcomment %}
 </div>
@@ -53,6 +58,19 @@
     const data = await response.json();
     alert(data.message);
 });
+</script>
+
+<script>
+  document.getElementById('download-history-btn').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const response = await fetch('{% url 'history' %}', {
+          method: 'POST',
+          body: formData,
+      });
+      const data = await response.json();
+      alert(data.message);
+  });
 </script>
 
 
