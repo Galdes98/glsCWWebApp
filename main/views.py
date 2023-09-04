@@ -9,6 +9,8 @@ from django.http import StreamingHttpResponse
 from django.views.decorators.csrf import csrf_exempt  # Import the csrf_exempt decorator
 from .models import CapturedPicture, WeightHistory
 from main.coweightRoboYolo import pesaje
+from openpyxl import Workbook
+from django.http import HttpResponse
 import cv2
 import threading
 
@@ -75,6 +77,32 @@ def takePicture(request):
         insert_weight.save()
 
     return JsonResponse({'message': 'Imagen guardada correctamente', 'values': values})
+
+def downloadHistory(request):
+    # Fetch data from your model
+    queryset = WeightHistory.objects.all()
+
+    # Create a new Excel workbook
+    workbook = Workbook()
+    worksheet = workbook.active
+
+    # Add headers to the worksheet
+    headers = ["id", "weight"]  # Replace with actual field names
+    worksheet.append(headers)
+
+    # Add data to the worksheet
+    for item in queryset:
+        row = [item.id, item.weight]  # Replace with actual field values
+        worksheet.append(row)
+
+    # Create a response with Excel content type
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=historico_pesaje.xlsx'
+
+    # Save the workbook content to the response    
+    workbook.save(response)
+    
+    return response
 
 class webcam_view(View):
     @csrf_exempt  # Apply the csrf_exempt decorator

@@ -10,7 +10,7 @@
         .catch(error => console.error('Error accessing webcam:', error));
 </script> {% endcomment %}
 
-<iframe src="{% url 'webcam' %}" width="1280" height="720"></iframe>
+<iframe src="{% url 'webcam' %}" width="640" height="480"></iframe>
 
 <div>  
   <form id="capture-form" method="post" enctype="multipart/form-data">
@@ -22,17 +22,11 @@
   <form id="upload-picture-btn" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="image"> <!-- Make sure the name attribute is "image" --> 
-    <button type="submit">Guardar Iasdfg</button> 
+    <button type="submit">Guardar Imagen</button> 
   </form>
-
-  <form id="download-history-btn" method="get" enctype="multipart/form-data">
-    {% csrf_token %}
-    <button type="submit">Descargar Historico</button> 
-  </form>
-  {% comment %} <button id="take-picture-btn">Tomar Foto</button> {% endcomment %}
-  {% comment %} <button id="upload-picture-btn">Subir Imagen</button> {% endcomment %}
 </div>
 
+<a href="{% url 'history' %}" class="btn btn-primary">Go to URL</a>
 
 <script>
   document.getElementById('capture-form').addEventListener('submit', async (event) => {
@@ -59,19 +53,6 @@
     alert(data.message);
     
 });
-</script>
-
-<script>
-  document.getElementById('download-history-btn').addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const formData = new FormData(event.target);
-      const response = await fetch('{% url 'history' %}', {
-          method: 'POST',
-          body: formData,
-      });
-      const data = await response.json();
-      alert(data.message);
-  });
 </script>
 
 

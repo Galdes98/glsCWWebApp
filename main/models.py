@@ -22,7 +22,7 @@ class CapturedPicture(models.Model):
 class WeightHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     weight = models.FloatField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    #timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Weight for {self.user.username} at {self.timestamp}"        
+        return f"Weight for {self.user.username}"        
