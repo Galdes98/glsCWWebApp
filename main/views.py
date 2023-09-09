@@ -28,6 +28,9 @@ def home(request):
 
     return render(request, 'main/home.html')
 
+def bootTest(request):
+    return render(request, 'main/boot_test.html')    
+
 @login_required(login_url="/login")
 def create_post(request):
     if request.method == 'POST':
