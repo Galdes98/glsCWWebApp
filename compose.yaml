@@ -1,8 +1,16 @@
 version: '3'
 services:
-  #ubuntu_container:
-  #  image: ubuntu:latest
-  #  command: sleep infinity
+  ubuntu_container:
+    image: ubuntu:latest
+    command: sleep infinity
+
+  postgres_container:
+    image: postgres:latest
+    command: sleep infinity   
+    ports:
+      - "5432:5432"
+    depends_on:
+      - ubuntu_container
 
   python_container:
     build:
@@ -12,12 +20,11 @@ services:
       - .:/webapp
     ports:
       - "8000:8000"
+    depends_on:
+      - ubuntu_container
+      - postgres_container
 
-  postgres_container:
-    image: postgres:latest
-    command: sleep infinity   
-    ports:
-      - "5432:5432"
+  
 
 
 

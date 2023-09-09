@@ -5,7 +5,7 @@ FROM python:latest
 WORKDIR /webapp
 
 # Install Git
-RUN apt-get update && apt-get install -y git
+RUN apt-get update && apt-get install -y git 
 
 # Clone your Git repository
 RUN git clone https://github.com/Galdes98/glsCWWebApp.git .
