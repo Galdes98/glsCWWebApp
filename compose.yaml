@@ -5,8 +5,11 @@ services:
   #  command: sleep infinity
 
   python_container:
-    image: python:latest
-    command: sleep infinity
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/webapp
     ports:
       - "8000:8000"
 
