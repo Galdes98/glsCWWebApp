@@ -1,0 +1,4 @@
+# Use postgres:latest as parent image
+FROM postgres:latest
+
+

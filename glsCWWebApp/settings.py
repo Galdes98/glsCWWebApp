@@ -85,7 +85,7 @@ DATABASES = {
         'NAME':'coweight',
         'USER': 'bruno',
         'PASSWORD':'vallejos',
-        'HOST':'localhost',
+        'HOST':'192.168.18.107',
         'PORT':'5432',
     }
 }

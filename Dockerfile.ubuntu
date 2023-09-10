@@ -1,14 +1,19 @@
 # Use an official Python runtime as a parent image
-FROM python:latest
+FROM ubuntu:latest
 
 # Set the working directory to /app
 WORKDIR /webapp
 
 # Install Git
-RUN apt-get update && apt-get install -y git 
+RUN apt-get update && apt-get install -y git
+
+# Install Python lastest version, build-essential, libpq-dev, python3-dev, python3-pip
+RUN apt-get install -y python3-pip python3-dev build-essential libpq-dev
 
 # Clone your Git repository
 RUN git clone https://github.com/Galdes98/glsCWWebApp.git .
+
+RUN git pull
 
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
@@ -20,4 +25,4 @@ EXPOSE 8000
 ENV NAME World
 
 # Run app.py when the container launches
-CMD ["python", "manage.py", "runserver"]
+#CMD ["python", "manage.py", "runserver"]
