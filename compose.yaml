@@ -8,19 +8,20 @@ services:
       - .:/webapp  
     ports:
       - "8000:8000"
+      - "5432:5432"
     command: sleep infinity     
     environment:
-      - HOST_IP_ADDRESS=${HOST_IP_ADDRESS}
-
-  postgres_container:
-    image: postgres:latest
-    command: sleep infinity   
-    ports:
-      - "5432:5432"
-    depends_on:
-      - ubuntu_container
-    environment:
       - HOST_IP_ADDRESS=${HOST_IP_ADDRESS}  
+
+  # postgres_container:
+  #   image: postgres:latest
+  #   command: sleep infinity   
+  #   ports:
+  #     - "5432:5432"
+  #   depends_on:
+  #     - ubuntu_container
+  #   environment:
+  #     - HOST_IP_ADDRESS=${HOST_IP_ADDRESS}  
 
 
 
