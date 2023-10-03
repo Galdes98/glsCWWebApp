@@ -20,14 +20,15 @@ RUN git clone https://github.com/Galdes98/glsCWWebApp.git .
 RUN git pull
 
 # Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
+#RUN pip install -r requirements.txt
 
 # Make port 8000 available to the world outside this container
-EXPOSE 8000
-EXPOSE 5432
+# is not necesary because when building image, use -p 8080:80 to map port 80 of the container to port 8080 on your host
+#EXPOSE 8000
+#EXPOSE 5432
 
 # Run postgres service
-RUN /etc/init.d/postgresql start
+#RUN /etc/init.d/postgresql start
 
 # Define environment variable
 ENV NAME World
