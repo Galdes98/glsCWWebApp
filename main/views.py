@@ -3,7 +3,7 @@ from .forms import RegisterForm, PostForm
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
-from .models import Post
+from .models import Post, WeightHistory
 from django.views import View
 from django.http import StreamingHttpResponse
 from django.views.decorators.csrf import csrf_exempt  # Import the csrf_exempt decorator
@@ -18,7 +18,7 @@ import threading
 
 @login_required(login_url="/login")
 def home(request):
-    #posts = Post.objects.all()
+    weights = WeightHistory.objects.all()
 
     # if request.method  == "POST":
     #     post_id = request.POST.get("post-id")
@@ -26,7 +26,7 @@ def home(request):
     #     if post and post.author == request.user:
     #         post.delete()
 
-    return render(request, 'main/home.html')
+    return render(request, 'main/home.html', {'weights': weights})
 
 def bootTest(request):
     return render(request, 'main/boot_test.html')    
