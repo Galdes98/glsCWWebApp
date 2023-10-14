@@ -9,15 +9,18 @@
   <form id="capture-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% comment %} <input type="file" name="image"> <!-- Make sure the name attribute is "image" --> {% endcomment %}
-    <button type="submit" class="btn btn-primary">Tomar foto</button>
-  </form>
-
-  <form id="upload-picture-btn" method="post" enctype="multipart/form-data" class="form">
-    {% csrf_token %}
-    <input type="file" name="image" > <!-- Make sure the name attribute is "image" --> 
-    <button type="submit" class="btn btn-primary">Guardar Imagen</button> 
+    <button type="submit" class="btn btn-dark" >Tomar foto</button>
   </form>
 </div>
+<br>
+<div class="input-group mb-3">
+  <form id="upload-picture-btn" method="post" enctype="multipart/form-data" class="form">
+    {% csrf_token %}
+    <input type="file" name="image" class="form-control"><br> <!-- Make sure the name attribute is "image" --> 
+    <button type="submit" class="btn btn-dark">Guardar Imagen</button> 
+  </form>
+</div>
+
 
 <div>
   <table class="table table-striped">  
@@ -38,7 +41,7 @@
   </table>
 </div>
 
-<a href="{% url 'history' %}" class="btn btn-primary">Descargar Historico</a>
+<a href="{% url 'history' %}" class="btn btn-dark">Descargar Historico</a>
 
 <script>
   document.getElementById('capture-form').addEventListener('submit', async (event) => {
