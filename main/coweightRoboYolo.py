@@ -5,13 +5,13 @@ import numpy as np
 def pesaje(imagen):
     rf = Roboflow(api_key="3E7t3sq8f4V5liAfrAtD")
     project = rf.workspace().project("coweight")
-    model = project.version(2).model
+    model = project.version(5).model
 
     # infer on a local image
     modelJson = model.predict(imagen).json()
 
     # save an image annotated with your predictions
-    model.predict(imagen).save("prediction.jpg")
+    model.predict(imagen, confidence=80, overlap=30).save("prediction.jpg")
 
     im = Image.open("prediction.jpg")
     # Get the metadata of the image
