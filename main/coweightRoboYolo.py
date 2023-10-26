@@ -11,7 +11,7 @@ def pesaje(imagen):
     modelJson = model.predict(imagen).json()
 
     # save an image annotated with your predictions
-    model.predict(imagen, confidence=80, overlap=30).save("prediction.jpg")
+    model.predict(imagen, confidence=80).save("prediction.jpg")
 
     im = Image.open("prediction.jpg")
     # Get the metadata of the image
