@@ -83,8 +83,8 @@ DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.postgresql',
         'NAME':'coweight',
-        'USER': 'postgres',
-        'PASSWORD':'4197389',
+        'USER': 'bruno',
+        'PASSWORD':'vallejos',
         'HOST':'localhost',
         'PORT':'5432',
     }

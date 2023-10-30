@@ -40,7 +40,7 @@ def pesaje(imagen):
             if 'x_old' in locals() and 'y_old' in locals() and x_old is not None and y_old is not None:
                 draw.line([(x_old, y_old), (x, y)], fill=point_color, width=4)
             x_old, y_old = x, y
-        #draw.polygon(polygon_points, fill=fill_color, outline=fill_color)     
+        draw.polygon(polygon_points, fill=fill_color, outline=fill_color)     
 
     # Create a mask of the polygon
     mask = Image.new('L', im.size, 0)
