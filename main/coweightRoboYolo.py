@@ -18,7 +18,7 @@ def pesaje(imagen):
     modelJson = model.predict("./media/"+imagen).json()
 
     # save an image annotated with your predictions
-    model.predict("./media/"+imagen, confidence=80).save("./media/prediction.jpg")
+    model.predict("./media/"+imagen, confidence=60).save("./media/prediction.jpg")
 
     im = Image.open("./media/prediction.jpg")
     # Get the metadata of the image
@@ -27,7 +27,8 @@ def pesaje(imagen):
     # Return 0 if the confidence is less than 80%
     for prediction in modelJson['predictions']:
         # Check the confidence of each prediction
-        if prediction['confidence'] < 80:
+        print ('confianza '+ str(prediction['confidence']) )
+        if prediction['confidence'] < 0.60:
             return values
 
     # Loop to draw the points

@@ -18,7 +18,7 @@ import threading
 
 @login_required(login_url="/login")
 def home(request):
-    weights = WeightHistory.objects.all()
+    weights = WeightHistory.objects.all().order_by('-id')
 
     # if request.method  == "POST":
     #     post_id = request.POST.get("post-id")
@@ -138,6 +138,9 @@ class webcam_view(View):
         insert_weight.save()
 
         return JsonResponse({'message': values['message'], 'values': values})
+        #return redirect( 'main/home.html', { } )
+
+        
 
     
      
