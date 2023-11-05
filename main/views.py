@@ -137,7 +137,7 @@ class webcam_view(View):
         insert_weight = WeightHistory(user=request.user, weight=values['weight'])
         insert_weight.save()
 
-        return JsonResponse({'message': 'Imagen guardada correctamente ' + weight_str, 'values': values})
+        return JsonResponse({'message': values['message'], 'values': values})
 
     
      

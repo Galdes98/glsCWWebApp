@@ -5,27 +5,30 @@ import numpy as np
 def pesaje(imagen):
     rf = Roboflow(api_key="3E7t3sq8f4V5liAfrAtD")
     project = rf.workspace().project("coweight")
-    model = project.version(5).model
+    model = project.version(5).model    
+    values = {
+        'weight': 0,
+        'distance': 0,
+        'width': 0,
+        'height': 0,   
+        'message': 'No se pudo calcular el peso'     
+    }
 
     # infer on a local image
-    modelJson = model.predict(imagen).json()
+    modelJson = model.predict("./media/"+imagen).json()
 
     # save an image annotated with your predictions
-    model.predict(imagen, confidence=80).save("prediction.jpg")
+    model.predict("./media/"+imagen, confidence=80).save("./media/prediction.jpg")
 
-    im = Image.open("prediction.jpg")
+    im = Image.open("./media/prediction.jpg")
     # Get the metadata of the image
     metadata = im.info
 
-    # Set the color and size of the points
-    point_color = (255, 255, 0)  # Yellow color
-    point_size = 2
-
-    # Set the fill color for the polygons
-    fill_color = (255, 255, 0)  # Yellow color
-
-    # Create a drawing object
-    draw = ImageDraw.Draw(im)
+    # Return 0 if the confidence is less than 80%
+    for prediction in modelJson['predictions']:
+        # Check the confidence of each prediction
+        if prediction['confidence'] < 80:
+            return values
 
     # Loop to draw the points
     for i in modelJson['predictions']:
@@ -35,16 +38,10 @@ def pesaje(imagen):
         for n in i['points']:
             #print (n['x'], n['y'])
             x, y = n['x'], n['y']
-            polygon_points.append((x, y))
-            draw.ellipse((x - point_size, y - point_size, x + point_size, y + point_size), fill=point_color)
-            if 'x_old' in locals() and 'y_old' in locals() and x_old is not None and y_old is not None:
-                draw.line([(x_old, y_old), (x, y)], fill=point_color, width=4)
-            x_old, y_old = x, y
-        draw.polygon(polygon_points, fill=fill_color, outline=fill_color)     
+            polygon_points.append((x, y))  
 
     # Create a mask of the polygon
     mask = Image.new('L', im.size, 0)
-    ImageDraw.Draw(mask).polygon(polygon_points, outline=1, fill=1)
     mask = np.array(mask)
 
     # Calculate the width and height inside the polygon in pixels
@@ -79,12 +76,14 @@ def pesaje(imagen):
 
     # calculate the weight
     weight = round(-413.36 + (2.69 * (tot_dist_cm * 0.85)) + (1.50 * tot_dist_cm), 2)
-
+    
     values = {
         'weight': weight,
         'distance': tot_dist_cm,
         'width': width_cm,
-        'height': height_cm,        
+        'height': height_cm,   
+        'message': 'Imagen guardada correctamente, con peso: '+str(weight)+' kg'     
     }
+    print(values)
 
     return values
