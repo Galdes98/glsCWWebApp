@@ -20,10 +20,23 @@
   <form id="upload-picture-btn" method="post" enctype="multipart/form-data" class="form">
     {% csrf_token %}
     <input type="file" name="image" class="form-control"><br> <!-- Make sure the name attribute is "image" --> 
-    <button type="submit" class="btn btn-dark">Guardar Imagen</button> 
+    <button  type="submit" class="btn btn-dark" >Guardar Imagen</button> 
+    <button  class="btn btn-dark" onclick="confirmDelete()">Actualizar Tabla</button> 
   </form>
 </div>
-
+<script>
+  function confirmDelete() {
+    if (confirm('Actualizar la tabla?')) {
+      // Si el usuario hace clic en "Aceptar", espera 5 segundos y luego recarga la página
+      setTimeout(function() {
+        location.reload();
+      }, 500); // 5000 milisegundos = 5 segundos
+    }
+  }
+  </script>
+   
+  </script>
+  
 
 <div>
   <table class="table table-striped">  
