@@ -25,4 +25,12 @@ class WeightHistory(models.Model):
     #timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Weight for {self.user.username}"        
+        return f"Weight for {self.user.username}"      
+
+class WeightPicture(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    imageId = models.ForeignKey(CapturedPicture, on_delete=models.CASCADE)
+    weightId = models.ForeignKey(WeightHistory, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Detail for image {self.imageId}  {self.weightId}"          

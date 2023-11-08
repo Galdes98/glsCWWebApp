@@ -7,7 +7,7 @@ from .models import Post, WeightHistory
 from django.views import View
 from django.http import StreamingHttpResponse
 from django.views.decorators.csrf import csrf_exempt  # Import the csrf_exempt decorator
-from .models import CapturedPicture, WeightHistory
+from .models import CapturedPicture, WeightHistory, WeightPicture
 from main.coweightRoboYolo import pesaje
 from openpyxl import Workbook
 from django.http import HttpResponse
@@ -127,18 +127,23 @@ class webcam_view(View):
         print(image_data)
         user = request.user
 
+        # Save the image in your model
         captured_picture = CapturedPicture(user=user, image=image_data)
         captured_picture.save()
 
-        #values = 1
+        # Get the weight from the image
         values = pesaje(image_data.name)
         weight_str = str(values['weight'])
 
+        # Save the weight in your model
         insert_weight = WeightHistory(user=request.user, weight=values['weight'])
         insert_weight.save()
 
+        # Save the image and weight detail in your model
+        insert_weight_picture = WeightPicture(user=request.user, imageId=captured_picture, weightId=insert_weight)
+        insert_weight_picture.save()
+
         return JsonResponse({'message': values['message'], 'values': values})
-        #return redirect( 'main/home.html', { } )
 
         
 
